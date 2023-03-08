@@ -1,0 +1,79 @@
+#include <iostream>
+#include <fstream>  // File-STREAM, ifstream, ofstream, fstream
+#include <iomanip>
+#include <string>   // для std::string
+#include <time.h>
+using namespace std;
+
+#define SIZE 5000
+
+void problem_01(string fileName) {
+//В конец существующего текстового файла записать строку с текстом "До свиданья люди!".
+    ofstream file(fileName);
+
+    if (file.is_open())
+    {
+   cout<<"Goodbye people!\n";
+    }
+
+
+  //Записать массив строк в файл, расположив каждый элемент массива на отдельной строке с сохранением порядка
+ //Записать массив строк в файл, расположив каждый элемент массива на отдельной строке с сохранением порядка
+void problem_02(string fileName) {
+
+ string arr[7]={
+     "ponedelnik\n",
+     "vtornik\n",
+     "sreda\n",
+     "chetverg\n",
+     "pyatnica\n",
+     "subbota\n",
+     "voskresen`e\n"
+     };
+    if (file.is_open()) {
+        cout << "Enter string,STOP for end\n";
+        int cnt = 0;
+        while (true) {
+            string str;
+            cout << cnt + 1 << " : ";
+            getline(cin, str);
+            if (str == "STOP") { break; }
+            //file << str << endl;
+            if (cnt == 0) {
+                file << str;
+            }
+            else {
+                file << endl << str;
+            }
+            cnt++;
+        }
+        cout << "Amount of str :" << cnt << endl;
+
+    }
+ }
+
+  void problem_03(string fileName) {
+
+ //Дан текстовый файл. Переписать в другой файл все его строки с заменой в них символа 0 на символ 1 и наоборот.
+
+    ifstream fin("First.txt");
+    
+    
+    if (fin.is_open() && fout.is_open()) {
+        char prov;
+        while((prov = fin.get()) != EOF) {
+            fout << (prov == '0' ? '1' : (prov == '1' ? '0' : prov));
+        }
+    } else return 1;
+
+    ofstream fout("Second.txt");
+    
+    fin.close();
+    fout.close();
+ 
+    return 0;
+
+    }
+}
+
+
