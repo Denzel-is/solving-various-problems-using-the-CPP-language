@@ -1,0 +1,70 @@
+#include <iostream>
+using namespace std;
+
+template <typename T>
+class Queue {
+private:
+    // Node class to represent each element in the queue
+    class Node {
+    public:
+        T data;
+        Node* next;
+        Node(const T& data, Node* next = nullptr) : data(data), next(next) {}
+    };
+
+    Node* pHead;  // Pointer to the first element in the queue
+    Node* pTail;  // Pointer to the last element in the queue
+    int size;  // Number of elements in the queue
+
+public:
+    // Default constructor
+    Queue() : pHead(nullptr), pTail(nullptr), size(0) {}
+
+    // Destructor
+    ~Queue() {
+        while (!IsEmpty()) {
+            DeQueue();
+        }
+    }
+
+    // Enqueue an element at the end of the queue
+    void EnQueue(const T& element) {
+        Node* new_node = new Node(element);
+        if (IsEmpty()) {
+            pHead = new_node;
+        }
+        else {
+            pTail->next = new_node;
+        }
+        pTail = new_node;
+        size++;
+    }
+
+    // Dequeue the first element from the queue and remove it
+    void DeQueue() {
+        if (IsEmpty()) {
+            return;
+        }
+        Node* temp = pHead;
+        pHead = pHead->next;
+        delete temp;
+        size--;
+        if (IsEmpty()) {
+            pTail = nullptr;
+        }
+    }
+
+    // Get the first element from the queue
+    T GetFirst() const {
+        if (IsEmpty()) {
+            return T();
+        }
+        return pHead->data;
+    }
+
+    // Check if the queue is empty
+    bool IsEmpty() const { return size == 0; }
+
+    // Get the number of elements in the queue
+    int Size() const { return size; }
+};
