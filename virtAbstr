@@ -1,0 +1,191 @@
+//////////////////////
+Problem 1
+/////////////////////
+#include <iostream>
+#include <cmath>
+using namespace std;
+//////////////////
+class Equation {
+public:
+    virtual void solve() = 0;
+};
+//////////////////
+class LinearEq : public Equation {
+private:
+    double a, b;
+public:
+    LinearEq(double a, double b): a(a), b(b) {}
+    virtual void solve() {
+        if (a == 0) {
+            if (b == 0) {
+                cout << "x is any real number" << endl;
+            }//second if
+            else {
+                cout << "No solution" << endl;
+            }
+        }//firts if
+        else {
+            double x = -b / a;
+            cout << "x = " << x << endl;
+        }
+    }
+};
+//////////////////
+class SquareEq : public Equation {
+private:
+    double a, b, c;
+public:
+    SquareEq(double a, double b, double c): a(a), b(b), c(c) {}
+    virtual void solve() {
+        double D = b * b - 4 * a * c;
+        if (D < 0) {
+            cout << "No real roots" << endl;
+        }//if
+        else if (D == 0) {
+            double x = -b / (2 * a);
+            cout << "x = " << x << endl;
+        }//else if
+        else {
+            double x1 = (-b + sqrt(D)) / (2 * a);
+            double x2 = (-b - sqrt(D)) / (2 * a);
+            cout << "x1 = " << x1 << ", x2 = " << x2 << endl;
+        }//else
+    }
+};
+// Функция "фабрики класса" (Class Factory Function)
+Equation* createEquation(int type) {
+    if (type == 1) {
+        double a, b;
+        cout << "Enter coefficients of linear equation (ax + b = 0): ";
+        cin >> a >> b;
+        return new LinearEq(a, b);
+    }//if
+    else if (type == 2) {
+        double a, b, c;
+        cout << "Enter coefficients of square equation (ax^2 + bx + c = 0): ";
+        cin >> a >> b >> c;
+        return new SquareEq(a, b, c);
+    }//else if
+    else {return nullptr; }
+}
+//////////////////
+int main() {
+    int type;
+    cout << "Enter type of equation to solve (1 - Linear, 2 - Square): ";
+    cin >> type;
+    //////////////////
+    Equation* eq = createEquation(type);
+    if (eq != nullptr) {
+        eq->solve();
+        delete eq;
+    }
+    //////////////////
+    else {cout << "Invalid equation type\n";
+    }
+    //////////////////
+    return 0;
+}
+//////////////////////
+Problem 2
+/////////////////////
+#include <iostream>
+#include <string>
+using namespace std;
+///////////////////
+class Animal {
+public:
+    virtual void Show() = 0;
+    virtual void Type() = 0;
+};
+///////////////////
+class Dog : public Animal {
+private:
+    string name;
+public:
+    Dog(string _name): name(_name) {}
+    void Show() {
+        cout << "This is " << name << " the dog." << endl;
+    }
+    ///////////////////
+    void Type() {
+        cout << name << " is a canine." << endl;
+    }
+};
+///////////////////
+class Cat : public Animal {
+private:
+    string name;
+public:
+    Cat(string _name) :name(_name) {}
+    void Show() {
+        cout << "This is " << name << " the cat." << endl;
+    }
+    ///////////////////
+    void Type() {
+        cout << name << " is a feline." << endl;
+    }
+};
+///////////////////
+class Parrot : public Animal {
+private:
+    string name;
+public:
+    Parrot(string _name) :name(_name) {}
+    void Show() {
+        cout << "This is " << name << " the parrot." << endl;
+    }
+    ///////////////////
+    void Type() {
+        cout << name << " is a bird." << endl;
+    }
+};
+///////////////////
+class Hamster : public Animal {
+private:
+    string name;
+public:
+    Hamster(string _name) :name(_name) {}
+    void Show() {
+        cout << "This is " << name << " the hamster." << endl;
+    }
+    ///////////////////
+    void Type() {
+        cout << name << " is a rodent." << endl;
+    }
+};
+///////////////////
+Animal* CreateAnimal() {
+    int choose;
+    string name;
+    cout << "Choose an animal: " << endl;
+    cout << "1. Dog"             << endl;
+    cout << "2. Cat"             << endl;
+    cout << "3. Parrot"          << endl;
+    cout << "4. Hamster"         << endl;
+    cin >> choose;
+    ///////////////////
+    cout << "Enter a name for your animal: \n";
+    cin >> name;
+    ///////////////////
+    switch (choose) {
+    case 1:
+        return new Dog(name);
+    case 2:
+        return new Cat(name);
+    case 3:
+        return new Parrot(name);
+    case 4:
+        return new Hamster(name);
+    default:
+        return nullptr;
+    }
+}
+////////////////////
+int main() {
+    Animal* animal = CreateAnimal();    
+    animal->Show();
+    animal->Type();
+    return 0;
+}
+
+
