@@ -1,0 +1,116 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <time.h>
+using namespace std;
+#define RAND(Min,Max)  (rand()%((Max)-(Min)+1)+(Min))
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); }~LC() { cin.get(); cin.get(); } } _;
+
+
+class Time {
+private:
+    int min, sec, hour;
+
+public:
+    Time(int _min, int _sec, int _hour) :sec(_sec), min(_min), hour(_hour) {}
+    Time(int cnt = 0) :hour(cnt), min(cnt), sec(cnt) {}
+    void input() {
+        cout << "Enter secs:\n";
+        cin >> sec;
+
+        cout << "Enter mins:\n";
+        cin >> min;
+
+        cout << "Enter hours:\n";
+
+    }
+    int GetTime() { return sec, min, hour; }
+
+    void time_s() { sec++, min++, hour++; }
+
+    friend Time& operator ++ (Time& obj);
+    friend Time& operator -- (Time& obj);
+};
+Time& operator ++(Time& obj)
+{
+    if (obj.sec >= 60) { obj.sec++; }
+    if (obj.min >= 60) { obj.min++; }
+    if (obj.hour >= 60) { obj.hour++; }
+    else { ++obj.hour; ++obj.sec; ++obj.min; }
+    return obj;
+}
+
+Time& operator ++(Time& obj)
+{
+    if (obj.sec >= 60) { obj.sec--; }
+    if (obj.min >= 60) { obj.min--; }
+    if (obj.hour >= 60) { obj.hour--; }
+    else { --obj.hour; --obj.sec; --obj.min; }
+    return obj;
+}
+
+Time& istream& operator>>(istream& left, Time& right)
+{
+    cout << "Enter hour`s\n" << endl;
+    left >> right.hour;
+    cout << "Enter min`s\n" << endl;
+    left >> right.minutes;
+    cout << "Enter sec`s\n" << endl;
+    left >> right.sec;
+    return left;
+}
+void operator += (int s) {
+    sec += s;
+    while (sec >= 60) {
+        sec -= 60;
+        min += 1;
+    }
+    while (min >= 60) {
+        min -= 60;
+        hour += 1;
+    }
+}
+
+// Decrease time by a certain number of seconds
+void operator -= (int s) {
+    sec -= s;
+    while (sec < 0) {
+        sec += 60;
+        min -= 1;
+    }
+    while (min < 0) {
+        min += 60;
+        hour -= 1;
+    }
+}
+
+// Increase time by one second (prefix)
+Time& operator ++ () {
+    *this += 1;
+    return *this;
+}
+
+// Decrease time by one second (prefix)
+Time& operator -- () {
+    *this -= 1;
+    return *this;
+}
+
+// Increase time by one second (postfix)
+Time operator ++ (int) {
+    Time old_time = *this;
+    ++(*this);
+    return old_time;
+}
+
+// Decrease time by one second (postfix)
+Time operator -- (int) {
+    Time old_time = *this;
+    --(*this);
+    return old_time;
+}
+int main() {
+
+
+
+}
