@@ -1,0 +1,55 @@
+#include <iostream>
+using namespace std;
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); }~LC() { cin.get(); cin.get(); } } _;
+/////////////////////
+class Transport {
+protected:
+	double speed; // скорость движения
+	double capacity; // вместимость
+public:
+	Transport(double s, double c) : speed(s), capacity(c) {}
+	virtual double getTime(double distance) = 0; // время перевозки
+	virtual double getCost(double distance) = 0; // стоимость перевозки
+};
+/////////////////////
+class Car : public Transport {
+public:
+	Car(double s, double c) : Transport(s, c) {}
+	double getTime(double distance) {return distance / speed;}
+	/////////////////////
+	double getCost(double distance) { return capacity * distance * 0.05; } // 0.05 - стоимость перевозки одного километра
+};
+/////////////////////
+class Bicycle : public Transport {
+public:
+	Bicycle(double s, double c) : Transport(s, c) {}
+	double getTime(double distance) {
+		return distance / speed * 2; // увеличиваем время в 2 раза из-за малой скорости
+	}
+	double getCost(double distance) { return 0; } // тк велосипед не требует топлива и обслуживания
+};
+/////////////////////
+class Cart : public Transport {
+public:
+	Cart(double s, double c) : Transport(s, c) {}
+	double getTime(double distance) {
+		return distance / speed * 3; // увеличиваем время в 3 раза из-за малой скорости и неудобности
+	}
+	/////////////////////
+	double getCost(double distance) {
+		return capacity * distance * 0.01; // 0.01 - стоимость перевозки одного километра
+	}
+};
+/////////////////////
+int main() {
+	Car car(60, 5);
+	Bicycle bicycle(20, 1);
+	Cart cart(10, 10);
+	double distance = 100;
+	/////////////////////
+	cout << "Автомобиль: время - " << car.getTime(distance) << " ч, стоимость - " << car.getCost(distance) << "пенни\n";//(пенни - валюта)
+	cout << "Велосипед: время - " << bicycle.getTime(distance) << " ч, стоимость - " << bicycle.getCost(distance) << " пенни\n";
+	cout << "Повозка: время - " << cart.getTime(distance) << " ч, стоимость - " << cart.getCost(distance) << " пенни\n";
+	/////////////////////
+	return 0;
+}
