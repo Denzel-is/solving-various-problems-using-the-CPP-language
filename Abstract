@@ -1,0 +1,267 @@
+#pragma once
+
+#include <iostream>
+#include <fstream>  // файловые потоки
+#include <sstream>  // строковый поток
+#include <iomanip>  // манипуляторы
+// контейнеры
+#include <string>
+#include <vector> // std::vector<> - динамический массив
+#include <array>  // std::array<> - аналог статического массива
+#include <list>   // std::list<> - двусвязанный список
+#include <set>    // std::set<> - бинарное дерево
+// итераторы
+#include <iterator>
+// алгоритмические ф-ции STL
+#include <algorithm>
+
+#include <time.h>
+using namespace std;
+
+// Базовый абстрактный класс обработки файлов
+class FileManeger
+{
+private:
+    string TypeName; // полное название типа файла
+protected:
+    string FileName; // имя файла
+    fstream File;    // файловый объект для чтения/записи файла
+public:
+    //FileManeger() = delete; // запретить конструктор по умолчанию
+    FileManeger(string Type) : TypeName(Type) {}
+    FileManeger(string Type, string FileName)
+        : TypeName(Type), FileName(FileName) {}
+
+    // Виртуальные методы класса:
+    // метод для открытия файла
+    virtual bool Open()
+    {
+        if (!IsOpen()) { // if ( IsOpen() != true )
+            File.open(FileName, ios::in);
+        }
+        return IsOpen();
+    }
+    // проверка, что файл открыт или закрыт
+    virtual bool IsOpen() const { return File.is_open(); }
+    // закрытие файла
+    virtual void Close()
+    {
+        if (IsOpen()) { // if( IsOpen() == true )
+            File.close();
+        }
+    }
+    //
+    virtual long long GetFileSize()
+    {
+        long long FileSize = -1;
+        if (IsOpen()) { // если файл уже открыт
+            long long pos = File.tellg(); // запомнить текущую позицию в файле
+            File.seekg(0, ios::end); // сдвинуться в конец файла
+            FileSize = File.tellg(); // получить индекс последнего байта файла
+            // по сути длина файла
+            File.seekg(pos, ios::beg); // вернуться на старую позицию в файле
+        }
+        else { // файл еще не открыт
+            Open();
+            File.seekg(0, ios::end);
+            FileSize = File.tellg();
+            Close();
+        }
+        return FileSize; // вернуть размер файла
+    }
+    // Печать инормации о файле
+    virtual void PrintInfo()
+    {
+        cout << "Object: " << typeid(*this).name() << endl;
+        cout << "Type: " << TypeName << endl
+            << "File Name: " << FileName << endl
+            << "File Size: " << GetFileSize() << " bytes\n";
+    }
+    // Чисто витуальный (нулевой) метод - класс абстрактный
+    //  для обработки файлов
+    virtual void Execute() = 0;
+
+    // виртуальный деструктор - обязателен для классов с виртуальными методами
+    virtual ~FileManeger() {}
+}; // FileManeger
+
+// Класс для текстовых файлов
+class File_Txt : virtual public FileManeger
+{
+public:
+    File_Txt() : FileManeger("Текстовый файл") {}
+    File_Txt(string FileName)
+        : FileManeger("Текстовый файл", FileName) {}
+    virtual void Execute() override
+    {
+        if (Open())
+        {
+            string str; // для чтения строк из файла
+            int i = 0; // счетчик строк
+            while (!File.eof()) // eof - End Of File
+            {
+                getline(File, str);
+                cout << ++i << ") " << str << endl;
+            }
+            Close();
+        }
+        else {
+            cout << "Ошибка: файл не найден!\n";
+        }
+    }
+
+};
+
+
+class File_CPP : virtual public FileManeger
+{
+public:
+    File_CPP() : FileManeger("Файл C++") {}
+    File_CPP(string FileName)
+        : FileManeger("Файл C++", FileName) {}
+
+    virtual void Execute() override
+    {
+        // Source.cpp
+        // Command = "notepad.exe Source.cpp"
+        // программа для запуска
+        string Program = "notepad.exe";
+        // командная строка для запуска
+        string Command = Program + " " + FileName;
+        // выполнить в косоли команду из Command
+        system(Command.c_str());
+    }
+}; // File_CPP
+
+
+//
+class File_Jpeg : virtual public FileManeger
+{
+public:
+    File_Jpeg() : FileManeger("Файл Jpeg") {}
+    File_Jpeg(string FileName)
+        : FileManeger("Файл Jpeg", FileName) {}
+
+    virtual void Execute() override
+    {
+        // Source.cpp
+        // Command = "notepad.exe Source.cpp"
+        // программа для запуска
+        string Program = "mspaint.exe";
+        // командная строка для запуска
+        string Command = Program + " " + FileName;
+        // выполнить в косоли команду из Command
+        system(Command.c_str());
+    }
+}; // File_CPP
+
+class File_Doc : virtual public FileManeger
+{
+public:
+    File_Doc() : FileManeger("Файл doc") {}
+    File_Doc(string FileName)
+        : FileManeger("Файл doc", FileName) {}
+
+    virtual void Execute() override
+    {
+        // Source.cpp
+        // Command = "notepad.exe Source.cpp"
+        // программа для запуска
+        string Program = "winword.exe";
+        // командная строка для запуска
+        string Command = Program + " " + FileName;
+        // выполнить в косоли команду из Command
+        system(Command.c_str());
+    }
+}; // File_Doc
+
+class File_Excel : virtual public FileManeger
+{
+public:
+    File_Excel() : FileManeger("Файл xlsx") {}
+    File_Excel(string FileName)
+        : FileManeger("Файл xlsx", FileName) {}
+
+    virtual void Execute() override
+    {
+        // Source.cpp
+        // Command = "notepad.exe Source.cpp"
+        // программа для запуска
+        string Program = "excel.exe";
+        // командная строка для запуска
+        string Command = Program + " " + FileName;
+        // выполнить в косоли команду из Command
+        system(Command.c_str());
+    }
+}; // File_Excel
+
+class File_Zip : virtual public FileManeger
+{
+public:
+    File_Zip() : FileManeger("Файл python") {}
+    File_Zip(string FileName): FileManeger("Файл .zip", FileName) {}
+
+    virtual void Execute() override
+    {
+        // Source.cpp
+        // Command = "notepad.exe Source.cpp"
+        // программа для запуска
+        string Program = ".zip";
+        // командная строка для запуска
+        string Command = Program + " " + FileName;
+        // выполнить в косоли команду из Command
+        system(Command.c_str());
+    }
+}; // File_Python
+
+// вектор, массив строк для известных расширений файлов
+vector<string> Extentions{
+  "txt",  // File_TXT
+  "cpp",  // File_CPP
+  "jpg", "jpeg", "jp",  // File_Jpeg
+  "doc", "docx",        // File_Doc
+  "xls", "xlsx",        // File_Excel
+  "zip", "rar", "7z",   // File_Archive
+};
+
+
+FileManeger* CreateFM(string FileName)
+{
+    // FileName = "Source.cpp" - CPP
+    // FileName = "Source.cpp.zip" - ZIP
+    // FileName = ".zip" - ZIP
+    // FileName = "zip" - файл без расширения
+    string Ext; // для расширения
+    for (int i = FileName.size() - 1; i >= 0; --i)
+    {
+        if (FileName[i] == '.') {
+            // расширение найдено - копируем его в строку Ext
+            for (int j = i + 1; j < FileName.size(); ++j) {
+                Ext += FileName[j];
+            }
+            break;
+        }
+    }
+    // ищем расширение в массиве Extentions
+    int index = -1;
+    for (int i = 0; i < Extentions.size(); ++i)
+    {
+        if (Extentions[i] == Ext) {
+            index = i;
+            break;
+        }
+    }
+    // в index индекс расширения из массива Extentions
+    switch (index)
+    {
+    case 0: return new File_Txt(FileName);  // TXT - тестовый файл
+    case 1: return new File_CPP(FileName);  // CPP
+    case 2: return new File_Jpeg(FileName); // Jpeg
+    case 3: return new File_Doc(FileName); // Microsoft Word
+    case 4: return new File_Excel(FileName); // Microsoft Excel
+    case 5: return new File_Zip(FileName); // ZIP file
+    default:
+        return nullptr; // неизвестный тип файла!
+        break;
+    }
+}
