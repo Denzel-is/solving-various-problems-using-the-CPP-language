@@ -1,0 +1,59 @@
+#include <iostream>
+#include<string>
+using namespace std;
+
+class Overcoat
+{
+public:
+    Overcoat() : type(" "), price(0) {}
+    Overcoat(string type, int price) : type(type), price(price) {}
+
+    string getType() const { return type; }
+    int getPrice() const { return price; }
+
+    Overcoat& operator=(const Overcoat& other)
+    {
+        type = other.type;
+        price = other.price;
+        return *this;
+    }
+
+    bool operator==(const Overcoat& other) const{return type == other.type; }
+    bool operator>(const Overcoat& other) const{ return price > other.price;}
+    bool operator>=(const Overcoat& other) const{return price >= other.price;}
+    bool operator<(const Overcoat& other) const{return price < other.price;}
+    bool operator<=(const Overcoat& other) const {return price <= other.price;}
+
+
+
+
+private:
+    string type;
+    int price;
+};
+
+
+int main() {
+    Overcoat coat1("raincoat", 50);
+    Overcoat coat2("winter coat", 100);
+    Overcoat coat3 = coat2;
+
+    if (coat1 == coat2)
+    {
+        cout << "The coats are the same type." << endl;
+    }
+    else
+    {
+        cout << "The coats are different types." << endl;
+    }
+
+    if (coat2 >= coat3)
+    {
+        cout << "Coat 2 is more expensive than or equal to coat 3." << endl;
+    }
+    else
+    {
+        cout << "Coat 2 is less expensive than coat 3." << endl;
+    }
+
+}
