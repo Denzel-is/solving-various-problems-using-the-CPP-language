@@ -1,0 +1,54 @@
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include <time.h>
+#include <stack>
+using namespace std;
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); } ~LC() { cin.get(); cin.get(); } } _;
+#define RAND(Min,Max)  (rand()%((Max)-(Min)+1)+(Min))
+
+
+//Есть строка символов, признаком конца, которой является символ ';'.
+//В строке могут быть фигурные, круглые, квадратные скобки.
+//Скобки могут быть открывающими и закрывающими.
+//Необходимо проверить корректность расстановки скобок.
+//При этом необходимо, чтобы выполнились следующие правила :
+//1) Каждая открывающая скобка должна иметь справа такую же закрывающую.Обратное также должно быть верно.
+//2) Открывающие и закрывающие пары скобок разных типов должны быть правильно расположены по отношению друг к другу.
+//
+//- Пример правильной строки : ({ x - y - z }*[x + 2y] - (z + 4x));
+//-Пример неправильной строки : ([x - y - z}*[x + 2y) - {z + 4x)]; .
+//
+//Если все правила соблюдены выведите информационное сообщение о корректности строки, иначе покажите строку до места возникновения первой ошибки.
+
+	bool check_bracket_placement(const std::string & str) {
+		std::stack<char> bracket_stack;
+
+		for (char c : str) {
+			if (c == '{' || c == '(' || c == '[') {
+				bracket_stack.push(c);
+			}
+			else if (c == '}' || c == ')' || c == ']') {
+				if (bracket_stack.empty()
+					|| (c == '}' && bracket_stack.top() != '{')
+					|| (c == ')' && bracket_stack.top() != '(') 
+					|| (c == ']' && bracket_stack.top() != '['))
+				{
+					return false;
+				}
+				bracket_stack.pop();
+			}
+		}
+		return bracket_stack.empty();
+	}
+int main() {
+	bool correct = check_bracket_placement("([x - y - z}*[x + 2y) - {z + 4x)]");
+	if (correct) {
+		std::cout << "Brackets are correctly placed" << std::endl;
+	}
+	else {
+		std::cout << "Brackets are NOT correctly placed" << std::endl;
+	}
+}
+
