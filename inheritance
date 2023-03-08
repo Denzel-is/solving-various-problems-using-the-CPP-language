@@ -1,0 +1,100 @@
+///////////////
+Problem 1 
+///////////////
+#include <iostream>
+#include <string>
+using namespace std;
+///////////////////
+class Animal {
+protected:
+	string name;
+	string breed;
+	int age;
+public:
+	Animal(string name, int age, string breed) {
+		this->name = name;
+		this->age = age;
+		this->breed = breed;
+	}
+	///////////////////
+	string getName() { return name; }
+	string getBreed() { return breed; }
+	int getAge() { return age; }
+};
+///////////////////
+class Dog : public Animal {
+public:
+	Dog(string name, int age, string breed) : Animal(name, age, breed) {}
+};
+///////////////////
+class Cat : public Animal {
+public:
+	Cat(string name, int age, string breed) : Animal(name, age, breed) {}
+};
+///////////////////
+class Parrot : public Animal {
+public:
+	Parrot(string name, int age, string breed) : Animal(name, age, breed) {}
+};
+///////////////////
+int main() {
+	Dog* dog = new Dog("Dog", 2, "German Shepherd");
+	cout << dog->getName() << " " << dog->getAge() << " " << dog->getBreed() << endl;
+	delete dog;
+	///////////////////
+	Cat* cat = new Cat("Cat", 3, "Siamese");
+	cout << cat->getName() << " " << cat->getAge() << " " << cat->getBreed() << endl;
+	delete cat;
+	///////////////////
+	Parrot* parrot = new Parrot("Parrot", 4, "African Grey");
+	cout << parrot->getName() << " " << parrot->getAge() << " " << parrot->getBreed() << endl;
+	delete parrot;
+	return 0;
+	///////////////////
+}
+/////////////////
+Problem 2
+/////////////////
+#include <iostream>
+#include <string>
+using namespace std;
+/////////////////
+class Certificate {
+protected:
+    string name;
+    string idNumber;
+    string nationality;
+public:
+    Certificate(string n, string id, string nat) : name(n), idNumber(id), nationality(nat) {}
+    void Print() {
+        cout << "Name: "        << name        << endl
+             << "ID number: "   << idNumber    << endl 
+             << "Nationality: " << nationality << endl;
+    }
+};
+/////////////////
+class ForeignPassport : public Certificate {
+private:
+    string passpNumber;
+    string Visa;
+public:
+    ForeignPassport(string n, string id, string nat, string pn, string vi) : Certificate(n, id, nat), passpNumber(pn), Visa(vi) {}
+    void Print() {
+        cout << "Name: "            << name        <<endl
+             << "ID number: "       << idNumber    << endl
+             << "Nationality: "     << nationality << endl
+             << "Passport number: " << passpNumber << endl
+             << "Visa info: "       << Visa        << endl;
+    }
+};
+/////////////////
+int main() {
+    Certificate* сertif = new Certificate    ("John Smith", "999999999", "Kazakh");//казах без понтов - беспонтовый казах
+    ForeignPassport* fp = new ForeignPassport("John Smith", "999999999", "Kazakh", "123456", "Top kz visa for all countries");
+    /////////////////
+    сertif->Print();
+    cout << endl;
+    fp->Print();
+    return 0;
+}
+/////////////////
