@@ -1,0 +1,60 @@
+#include <iostream>
+#include <fstream>  // файловые потоки
+#include <sstream>  // строковый поток
+#include <iomanip>  // манипуляторы
+// контейнеры
+#include <string>
+#include <vector> // std::vector<> - динамический массив
+#include <array>  // std::array<> - аналог статического массива
+#include <list>   // std::list<> - двусвязанный список
+#include <set>    // std::set<> - бинарное дерево
+// итераторы
+#include <iterator>
+// алгоритмические ф-ции STL
+#include <algorithm>
+
+#include <time.h>
+using namespace std;
+#define RAND(Min,Max)  (rand()%((Max)-(Min)+1)+(Min))
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); }~LC() { cin.get(); cin.get(); } } _;
+
+class Wheel {
+public:
+    int size;
+};
+
+class Engine {
+public:
+    int horsepower;
+};
+
+class Door {
+public:
+    int numDoors;
+};
+
+class Battery {
+public:
+    int capacity;
+};
+
+class Car : public Wheel, public Engine, public Door, public Battery {
+public:
+    std::string make;
+    std::string model;
+
+    Car(std::string m, std::string mo, int s, int h, int d, int c) {
+        make = m;
+        model = mo;
+        size = s;
+        horsepower = h;
+        numDoors = d;
+        capacity = c;
+    }
+};
+
+int main() {
+    Car mycar("Tesla", "Model S", 21, 518, 4, 100);
+    std::cout << mycar.make << " " << mycar.model << " has " << mycar.size << " inch wheels, " << mycar.horsepower << " horsepower engine, " << mycar.numDoors << " doors and " << mycar.capacity << " kWh battery capacity." << std::endl;
+    return 0;
+}
