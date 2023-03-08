@@ -1,0 +1,114 @@
+#include <iostream>
+#include <iomanip>  // setw()
+#include <fstream>
+#include <string>  // STL C++ ==> class string
+#include <time.h>
+using namespace std;
+#define RAND(Min,Max)  (rand()%((Max)-(Min)+1)+(Min))
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); }~LC() { cin.get(); cin.get(); } } _;
+//////////////
+class TreeNode {
+public:
+	string word;
+	string transl;
+	int cnt;
+	TreeNode* left;
+	TreeNode* right;
+	//////////////
+	TreeNode(string word, string transl, int cnt = 0) {
+		this->word = word;
+		this->transl = transl;
+		this->cnt = cnt;
+		this->left = nullptr;
+		this->right = nullptr;
+	}
+	//////////////
+	void print() {
+		cout << word << " - " << transl << " (кол-во использований: " << cnt << ")" << endl;
+	}
+};
+//////////////
+class BinaryTree {
+public:
+	TreeNode* root;
+	BinaryTree() { root = nullptr; }
+	//////////////
+	void insert(string word, string transl, int cnt = 0) {
+		if (root == nullptr) {
+			root = new TreeNode(word, transl, cnt);
+			return;
+		}
+		//////////////
+		TreeNode* cur = root;
+		while (true) {
+			if (word < cur->word) {
+				if (cur->left == nullptr) {
+					cur->left = new TreeNode(word, transl, cnt);
+					return;
+				}
+				cur = cur->left;
+			}
+			else if (word > cur->word) {
+				if (cur->right == nullptr) {
+					cur->right = new TreeNode(word, transl, cnt);
+					return;
+				}
+				cur = cur->right;
+			}
+			else {
+				// слово уже есть в дереве
+				return;
+			}
+		}
+	}
+	//////////////
+	void display(TreeNode* node) {
+		if (node == nullptr) { return; }
+		display(node->left);
+		node->print();
+		display(node->right);
+	}
+	//////////////
+	void displayAll() { display(root); }
+	//////////////
+	void search(string word) {
+		TreeNode* cur = root;
+		while (cur != nullptr) {
+			if (word < cur->word) { cur = cur->left; }
+			else if (word > cur->word) { cur = cur->right; }
+			else {
+				// слово найдено
+				cur->cnt++;
+				cur->print();
+				return;
+			}
+		}
+		// слово не найдено
+		cout << "Слово \"" << word << "\" не найдено в словаре." << endl;
+	}
+};
+//////////////
+int main() {
+	BinaryTree dictionary;
+	//////////////
+	// начальный ввод словаря
+	dictionary.insert("Apple", "Яблоко", 0);
+	dictionary.insert("Hello", "Привет", 0);
+	dictionary.insert("Home", "Дом", 0);
+	dictionary.insert("House", "Дом", 0);
+	dictionary.insert("Phone", "Телефон", 0);
+	dictionary.insert("Paper", "Бумага", 0);
+	dictionary.insert("Newspaper", "Газета", 0);
+	// ну тут можно большое количество различных слов и переводов занести,думаю этого хватит
+	//////////////
+	cout << "Список всех слов библиотеки сразу после ввода:" << endl;
+	dictionary.displayAll();
+	//////////////
+	// поиск слова
+	string word;
+	while (true) {
+		cout << "Введите слово для поиска";
+		cin >> word;
+		dictionary.search(word);
+	}
+}
