@@ -1,0 +1,56 @@
+
+//1)** Описать структуру Rabotnik с полями :
+//-фамилия;
+//-должность;
+//-дата поступления на работу;
+//-возраст работника;
+//-стаж работы(сколько лет работает).
+//
+//
+//Создать массив работников.
+//Предусмотреть:
+//-Заполнение массива работников;
+//-Вывод информации о достижении пенсионного возраста работниками с указанием фамилии, возраста и должности;
+//-Вывод информации о стаже работы сотрудников на указанный год в порядке убывания.
+
+#include <iostream>
+using namespace std;
+#define SIZE 3
+struct Robotnik
+{
+    char surname[SIZE]; // фамилия 
+    char post[SIZE]; // должность 
+    int yearofborn; // год рождения
+    int datetoadmtowork;//дата поступления на работу 
+    int staj;
+    int age;
+};
+void nachalo() {
+    setlocale(LC_ALL, "");
+    bool f = true;
+    Robotnik mass[SIZE];
+    for (int i = 0; i < SIZE; ++i)
+    {
+        cout << "Введите информацию о сотруднике №" << i + 1 << ":" << endl;
+        cout << "1) Фамилия: ";    cin >> mass[i].surname;
+        cout << "2) Должность: "; cin >> mass[i].post;
+        cout << "3)Год рождения :"; cin >> mass[i].yearofborn;
+        cout << "4) Год поступление на работу: "; cin >> mass[i].datetoadmtowork;
+        cout << "5) Стаж работы :"; cin >> mass[i].staj;
+      
+        mass[i].age = 2022 - mass[i].yearofborn;
+        if (mass[i].yearofborn >= 60) {
+            cout << "Работник " << mass[i].surname << "занимающий должность "
+                << mass[i].post << "Достиг пенсионного овзраста,его возраст:"<<mass[i].age;
+            }
+    }
+}
+
+
+
+
+
+int main()
+{
+    nachalo();
+}
