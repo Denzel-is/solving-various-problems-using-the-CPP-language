@@ -1,0 +1,121 @@
+#include <iostream>
+using namespace std;
+
+
+// Node class for singly linked list
+class Node
+{
+public:
+    int data;
+    Node* pNext;
+
+    Node(int data)
+    {
+        this->data = data;
+        this->pNext = nullptr;
+    }
+};
+
+// Stack class using a singly linked list
+class Stack
+{
+private:
+    Node* top;
+    int size;
+
+    // Increase the stack size by allocating a new node
+    void increaseSize()
+    {
+        Node* newNode = new Node(-1);
+        newNode->pNext = this->top;
+        this->top = newNode;
+        this->size++;
+    }
+
+public:
+    Stack()
+    {
+        this->top = nullptr;
+        this->size = 0;
+    }
+
+    // Push an element onto the stack
+    void push(int data)
+    {
+        // Increase stack size if necessary
+        if (this->size == 0)
+            this->increaseSize();
+
+        // Push the data onto the stack
+        Node* newNode = new Node(data);
+        newNode->pNext = this->top->pNext;
+        this->top->pNext = newNode;
+    }
+
+    // Pop an element from the stack
+    int pop()
+    {
+        if (this->size == 0)
+        {
+            cout << "Error: stack is empty" << endl;
+            return -1;
+        }
+
+        // Pop the top element from the stack
+        Node* toDelete = this->top->pNext;
+        int data = toDelete->data;
+        this->top->pNext = toDelete->pNext;
+        delete toDelete;
+
+        // Decrease stack size if necessary
+        if (this->top->pNext == nullptr)
+        {
+            delete this->top;
+            this->top = nullptr;
+            this->size--;
+        }
+
+        return data;
+    }
+
+    // Return the size of the stack
+    int getSize()
+    {
+        return this->size;
+    }
+
+    // Check if the stack is empty
+    bool isEmpty()
+    {
+        return this->size == 0;
+    }
+};
+
+int main()
+{
+    Stack stack;
+
+    // Push some elements onto the stack
+    stack.push(1);
+    stack.push(2);
+    stack.push(3);
+
+    // Print the size of the stack
+   cout << "Size of stack: " << stack.getSize() << endl;
+
+    // Pop an element from the stack
+    int popped = stack.pop();
+    cout << "Popped element: " << popped << endl;
+
+    // Push some more elements onto the stack
+    stack.push(4);
+    stack.push(5);
+
+    // Check if the stack is empty
+    if (stack.isEmpty())
+        cout << "Stack is empty" << endl;
+    else
+       cout << "Stack is not empty" << endl;
+
+    return 0;
+}
