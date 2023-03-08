@@ -1,0 +1,255 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <time.h>
+using namespace std;
+#define RAND(Min,Max)  (rand()%((Max)-(Min)+1)+(Min))
+struct LC { LC() { system("chcp 1251 > nul"); srand(time(0)); }~LC() { cin.get(); cin.get(); } } _;
+
+/*
+  Перегрузка операторов
+*/
+/*Домашнее задание
+
+Тема : Перегрузка операторов
+
+Задание 1
+Доделать работу в классе "1-Работа в классе-CatDog.txt".
+Реализовать классы Cat, Dog, CatDog, DogCat(доделать).
+Для этих классов написать перегруженный оператор '+', чтобы можно было
+выполнить операцию сложения классов Cat и Dog и получить класс CatDog :
+class CatDog = class Cat + class Dog;
+и операцию сложения классов Dog и Cat и получить класс DogCat :
+class DogCat = class Dog + class Cat; -доделать
+
+	Проверить работу кодом в main() :
+	DogCat DC = dog + cat;
+cout << DC << endl;*/
+// Прототипы классов
+class cat;
+class catdog;
+class dog;
+class dogcat;
+
+class dog {
+private:
+	string name;
+	string breed;
+	int age;
+	int cntrab;//кол-во пойманных зайцев
+public:
+	dog() : name(), breed(), age(), cntrab() {}
+
+	friend ostream& operator << (ostream& os, const dog& obj) {
+		os << "Name :" << obj.name << endl;
+		os << "breed:" << obj.breed << endl;
+		os << "age:" << obj.age << endl;
+		os << "cntrab:" << obj.cntrab << endl;
+
+		return os;
+	}
+	friend istream& operator >> (istream& is, dog& obj) {
+		cout << "Enter name:";
+		getline(is, obj.name);
+
+		cout << "Enter breed:";
+		getline(is, obj.breed);
+
+		cout << "Enter age:";
+		is >> obj.age;
+
+		cout << "Enter cntrab:";
+		is >> obj.cntrab;
+		return is.ignore();
+		//return is;
+	}
+	dog& operator ++ () {
+		++this->cntrab;
+		return *this;
+
+	}
+	friend catdog operator + (const cat& left, const dog& right);
+	friend dogcat operator + (const dog& left, const cat& right);
+
+};//dog
+
+class cat {
+private:
+	string name;
+	string breed;
+	int age;
+	int lives;//кол-во пойманных зайцев
+public:
+	cat() : name(), breed(), age(), lives() {}
+
+	friend ostream& operator << (ostream& os, const cat& obj) {
+		os << "Name :" << obj.name << endl;
+		os << "breed:" << obj.breed << endl;
+		os << "age:" << obj.age << endl;
+		os << "lives:" << obj.lives << endl;
+		return os;
+	}
+	friend istream& operator >> (istream& is, cat& obj) {
+		cout << "Enter name:";
+		getline(is, obj.name);
+
+		cout << "Enter breed:";
+		getline(is, obj.breed);
+
+		cout << "Enter age:";
+		is >> obj.age;
+
+		cout << "Enter lives:";
+		is >> obj.lives;
+		return is.ignore();
+		//return is;
+	}
+	cat& operator ++ () {
+		++this->lives;
+		return *this;
+	}
+	friend catdog operator + (const cat& left, const dog& right);
+	friend dogcat operator + (const dog& left, const cat& right);
+
+};//cat
+
+class catdog {
+private:
+	string name;
+	string breed;
+	int age;
+	int lives;//кол-во пойманных зайцев
+	int cntrab;
+public:
+	catdog() : name(), breed(), age(), lives(), cntrab() {}
+
+	friend ostream& operator << (ostream& os, const catdog& obj) {
+		os << "Name :" << obj.name << endl;
+		os << "breed:" << obj.breed << endl;
+		os << "age:" << obj.age << endl;
+		os << "lives:" << obj.lives << endl;
+		os << "cntrab:" << obj.cntrab << endl;
+		return os;
+	}
+	friend istream& operator >> (istream& is, catdog& obj) {
+		cout << "Enter name:";
+		getline(is, obj.name);
+
+		cout << "Enter breed:";
+		getline(is, obj.breed);
+
+		cout << "Enter age:";
+		is >> obj.age;
+
+		cout << "Enter lives:";
+		is >> obj.lives;
+
+		cout << "Enter cntrab:";
+		is >> obj.cntrab;
+		return is.ignore();
+		//return is;
+	}
+	catdog& operator ++ () {
+		++this->lives;
+		return *this;
+	}
+
+	catdog operator ++ (int) {
+		catdog temp = *this;
+		++this->cntrab;
+		return temp;
+	}
+	friend catdog operator + (const cat& left, const dog& right);
+	friend dogcat operator + (const dog& left, const cat& right);
+
+};
+//
+//class DogCat;
+class dogcat {
+private:
+	string name;
+	string breed;
+	int age;
+	int lives;//кол-во пойманных зайцев
+	int cntrab;
+public:
+	dogcat() : name(), breed(), age(), lives(), cntrab() {}
+
+	friend ostream& operator << (ostream& os, const dogcat& obj) {
+		os << "Name :" << obj.name << endl;
+		os << "breed:" << obj.breed << endl;
+		os << "age:" << obj.age << endl;
+		os << "lives:" << obj.lives << endl;
+		os << "cntrab:" << obj.cntrab << endl;
+		return os;
+	}
+	friend istream& operator >> (istream& is, dogcat& obj) {
+		cout << "Enter name:";
+		getline(is, obj.name);
+
+		cout << "Enter breed:";
+		getline(is, obj.breed);
+
+		cout << "Enter age:";
+		is >> obj.age;
+
+		cout << "Enter lives:";
+		is >> obj.lives;
+
+		cout << "Enter cntrab:";
+		is >> obj.cntrab;
+		return is.ignore();
+		//return is;
+	}
+	dogcat& operator ++ () {
+		++this->lives;
+		return *this;
+	}
+
+	dogcat operator ++ (int) {
+		dogcat temp = *this;
+		++this->cntrab;
+		return temp;
+	}
+	friend catdog operator + (const cat& left, const dog& right);
+	friend dogcat operator + (const dog& left, const cat& right);
+}; //class dogcat
+
+dogcat operator + (const dog& left, const cat& right) {
+	dogcat temp;
+	temp.name = left.name + "-" + right.name;
+	temp.breed = left.breed + "-" + right.breed;
+	temp.age = (left.age + right.age) / 2;
+	temp.cntrab = left.cntrab;
+	temp.lives = right.lives;
+
+	return temp;
+}
+
+catdog operator + (const cat& left, const dog& right) {
+	catdog temp;
+	temp.name = left.name + "-" + right.name;
+	temp.breed = left.breed + "-" + right.breed;
+	temp.age = (left.age + right.age) / 2;
+	temp.lives = left.lives;
+	temp.cntrab = right.cntrab;
+	return temp;
+}
+
+
+int main()
+{
+	dog dog;
+	cat cat;
+
+	cin >> cat >> dog;
+
+	catdog CATDOG = cat + dog;
+
+	cout << cat << endl;
+	cout << dog << endl;
+	cout << CATDOG << endl;
+	cout << "-----------------------" << endl;
+	dogcat CATDOG = dog + cat;
+	cout << CATDOG << endl;
+}
